@@ -1,6 +1,7 @@
 import csv
 import math
 
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -48,10 +49,12 @@ class Item:
     @classmethod
     def instantiate_from_csv(cls):
         """Класс-метод, инициализирующий  экземпляры класса Item данными из файла src/items.csv"""
-        with open('items.csv') as csvfile:
+        # Обнуляем список объектов класса
+        cls.all = []
+        with open('../homework-2/items.csv') as csvfile:
             reader = csv.DictReader(csvfile)
-        for row in reader:
-            cls(row.get('name'), row.get('price'), row.get('quantity'))
+            for row in reader:
+                cls(row.get('name'), row.get('price'), row.get('quantity'))
 
     @staticmethod
     def string_to_number(string_num: str) -> int:

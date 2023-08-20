@@ -16,15 +16,23 @@ def test_calculate_total_price(test_data):
 
 def test_apply_discount(test_data):
     """Тестируем метод, который применяет скидку"""
-    assert test_data.apply_discount() == 8000
+    Item.pay_rate = 0.8
+    test_data.apply_discount()
+    assert test_data.price() == 8000.0
 
 
 def test_instantiate_from_csv():
-    """Тестируем метод, который принимает данные из файла .csv"""
-    assert Item.string_to_number('5') == 5
-    assert Item.string_to_number('5.0') == 5
-    assert Item.string_to_number('5.5') == 5
+    """Тестируем инициализацию списка элементов класса Item из файла src/items.csv"""
+    Item.instantiate_from_csv()
+    # Общее количество элементов в загруженном списке
+    assert len(Item.all) == 5
+    # Проверяем корректность загрузки первого элемента
+    item_test = Item.all[0]
+    assert item_test.name == 'Смартфон'
 
 
 def test_string_to_number():
-     """Тестируем метод, который возвращает число из числа-строки"""
+    """Тестируем метод, который возвращает число из числа-строки"""
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.0') == 5
+    assert Item.string_to_number('5.5') == 5
