@@ -69,3 +69,5 @@ class Item:
         """Статический метод, возвращающий число из числа-строки."""
         number_needed = float(string_num)
         return math.floor(number_needed)
+
+print("Hello")
