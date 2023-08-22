@@ -18,8 +18,7 @@ def test_apply_discount(test_data):
     """Тестируем метод, который применяет скидку"""
     Item.pay_rate = 0.8
     test_data.apply_discount()
-    assert test_data.price() == 8000.0
-
+    assert test_data.price == 8000
 
 def test_instantiate_from_csv():
     """Тестируем инициализацию списка элементов класса Item из файла src/items.csv"""
