@@ -1,5 +1,8 @@
 import csv
+import json
 import math
+import os.path
+from src.exceptions import InstantiateCSVError
 
 
 class Item:
@@ -8,6 +11,7 @@ class Item:
     """
     pay_rate = 1.0
     all = []
+
 
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
@@ -58,14 +62,38 @@ class Item:
         self.__name = length_name
 
     @classmethod
-    def instantiate_from_csv(cls):
-        """Класс-метод, инициализирующий  экземпляры класса Item данными из файла src/items.csv"""
+    def instantiate_from_csv(cls, csv_file = 'items.csv'):
+        """Класс-метод инициализации списка элементов класса Item из файла src/items.csv"""
+        cls.validate_csv_file()
         # Обнуляем список объектов класса
         cls.all = []
-        with open('../homework-2/items.csv') as csvfile:
+
+        with open(csv_file, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                cls(row.get('name'), row.get('price'), row.get('quantity'))
+                read_name = row.get('name')
+                read_price = row.get('price')
+                read_quantity = row.get('quantity')
+                # Файл поврежден, нет какого-то столбца - выбрасываем исключение InstantiateCSVError
+                # с именем csv-файла, который не удалось открыть
+                # и сбрасываем счетчик экземпляров класса all
+                # Все нормально - создаем экземпляр класса Item
+                cls(read_name, float(read_price), int(read_quantity))
+
+    @classmethod
+    def validate_csv_file(cls, csv_file = 'items.csv'):
+        if not os.path.exists(csv_file):
+            raise FileNotFoundError('Отсутствует файл item.csv')
+
+        try:
+            file = open(csv_file, encoding='UTF-8')
+            data = csv.DictReader(file)
+        except OSError:
+            raise InstantiateCSVError("Файл item.csv поврежден")
+
+        for item in data:
+            if not all(['name' in item, 'price' in item, 'quantity' in item]):
+                raise InstantiateCSVError('Файл item.csv поврежден')
 
     @staticmethod
     def string_to_number(string_num: str) -> int:
