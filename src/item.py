@@ -68,16 +68,12 @@ class Item:
         # Обнуляем список объектов класса
         cls.all = []
 
-        with open(csv_file, newline='') as csvfile:
+        with open(csv_file, newline='', encoding='UTF-8') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 read_name = row.get('name')
                 read_price = row.get('price')
                 read_quantity = row.get('quantity')
-                # Файл поврежден, нет какого-то столбца - выбрасываем исключение InstantiateCSVError
-                # с именем csv-файла, который не удалось открыть
-                # и сбрасываем счетчик экземпляров класса all
-                # Все нормально - создаем экземпляр класса Item
                 cls(read_name, float(read_price), int(read_quantity))
 
     @classmethod

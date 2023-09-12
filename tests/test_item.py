@@ -66,3 +66,8 @@ def test__str__(test_data):
 #     assert phone1 + item_check == 25
 #     assert phone2 + item_check == 30
 #     assert item_check + phone1 == 25
+
+
+def test_instantiate_from_csv__file_not_found():
+    with pytest.raises(FileNotFoundError):
+        Item.instantiate_from_csv('not_exists_file.csv')

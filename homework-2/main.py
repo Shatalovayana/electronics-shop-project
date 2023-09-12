@@ -15,6 +15,7 @@ if __name__ == '__main__':
     assert len(Item.all) == 5  # в файле 5 записей с данными по товарам
 
     item1 = Item.all[0]
+    print(item1.name)
     assert item1.name == 'Смартфон'
 
     assert Item.string_to_number('5') == 5
